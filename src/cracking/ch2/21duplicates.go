@@ -18,10 +18,10 @@ func main() {
 
 func generateList(ar []int) *Node {
 	var prev, root *Node = nil, nil
-	for v, _ := range ar {
+	for _, v := range ar {
 		node := Node { v, nil }
 		if prev != nil {
-			node.Next = &node
+			prev.Next = &node
 		} else {
 			root = &node
 		}
@@ -34,8 +34,11 @@ func generateList(ar []int) *Node {
 
 func printList(root *Node) {
 	var curNode *Node = root
+
 	for curNode != nil {
-		fmt.Printf("%v -> ", *curNode.Value)
-		curNode = *curNode.Next
+		fmt.Printf("%v -> ", curNode.Value)
+		curNode = curNode.Next
 	}
+
+	fmt.Print("\n")
 }
