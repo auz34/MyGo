@@ -10,6 +10,21 @@ type Node struct {
 	Next *Node
 }
 
+func (self *Node) removeNextFromList() {
+	self.Next = self.Next.Next
+}
+
+func (self *Node) removeSubsequentDuplicates() {
+	curNode := self
+	for curNode != nil {
+		if curNode.Next != nil && curNode.Next.Value == self.Value {
+			curNode.removeNextFromList()
+		}
+
+		curNode = curNode.Next
+	}
+}
+
 func main() {
 	ar := []int { 1, 8, 4, 9, 8, 12, 16 }
 	root := generateList(ar)
@@ -24,30 +39,9 @@ func main() {
 func removeDuplicates(root *Node) {
 	curNode := root
 	for curNode != nil {
-		curNode.Next = searchAndRemove(curNode.Next, curNode.Value)
+		curNode.removeSubsequentDuplicates()
 		curNode = curNode.Next
 	}
-}
-
-func searchAndRemove(start *Node, value int) *Node {
-	curNode := start
-	result := start
-	var prevNode *Node = nil
-	for curNode != nil {
-		if curNode.Value == value {
-			if prevNode != nil {
-				prevNode.Next = curNode.Next
-			} else {
-				result.Next = curNode.Next
-			}
-		} else {
-			prevNode = curNode
-		}
-
-		curNode = curNode.Next
-	}
-
-	return result
 }
 
 func generateList(ar []int) *Node {
