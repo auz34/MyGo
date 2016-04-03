@@ -13,7 +13,41 @@ type Node struct {
 func main() {
 	ar := []int { 1, 8, 4, 9, 8, 12, 16 }
 	root := generateList(ar)
+	fmt.Printf("Input List: \n")
 	printList(root)
+	removeDuplicates(root)
+	fmt.Printf("Output List: \n")
+	printList(root)
+
+}
+
+func removeDuplicates(root *Node) {
+	curNode := root
+	for curNode != nil {
+		curNode.Next = searchAndRemove(curNode.Next, curNode.Value)
+		curNode = curNode.Next
+	}
+}
+
+func searchAndRemove(start *Node, value int) *Node {
+	curNode := start
+	result := start
+	var prevNode *Node = nil
+	for curNode != nil {
+		if curNode.Value == value {
+			if prevNode != nil {
+				prevNode.Next = curNode.Next
+			} else {
+				result.Next = curNode.Next
+			}
+		} else {
+			prevNode = curNode
+		}
+
+		curNode = curNode.Next
+	}
+
+	return result
 }
 
 func generateList(ar []int) *Node {
