@@ -67,7 +67,7 @@ func main() {
 	stack.Push(13); stack.Push(14); stack.Push(15)
 
 	v, e := stack.Pop()
-	for e != nil {
+	for e == nil {
 		fmt.Printf(" %v ->", v)
 		v, e = stack.Pop()
 	}
