@@ -2,19 +2,23 @@ package basics
 
 import "errors"
 
-type stack struct {
+type Stack struct {
 	internal []int
 }
 
-func NewStack() *stack {
-	return &stack{ make([]int, 0)}
+func NewStack() *Stack {
+	return &Stack{ make([]int, 0)}
 }
 
-func (self *stack) Push(v int) {
+func (self *Stack) Count() int {
+	return len(self.internal)
+}
+
+func (self *Stack) Push(v int) {
 	self.internal = append(self.internal, v)
 }
 
-func (self *stack) Pop() (int, error) {
+func (self *Stack) Pop() (int, error) {
 	l := len(self.internal)
 
 	if l == 0 {
@@ -27,7 +31,7 @@ func (self *stack) Pop() (int, error) {
 	return res, nil
 }
 
-func (self *stack) Peek() (int, error) {
+func (self *Stack) Peek() (int, error) {
 	l := len(self.internal)
 
 	if l == 0 {
