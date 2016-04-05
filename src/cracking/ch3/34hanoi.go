@@ -12,7 +12,6 @@ package main
 import (
 	"fmt"
 	"cracking/ch3/basics"
-	"errors"
 )
 
 type hanoiPuzzle struct {
@@ -42,40 +41,44 @@ func (self *hanoiPuzzle) getStackByNum(num int) *basics.Stack {
 	return nil
 }
 
+func (self *hanoiPuzzle) getMissingStack(first, second int) int {
+	if first == 1 || second == 1 {
+		if first == 2 || second == 2 {
+			return 3
+		}
+
+		return 2
+	}
+
+	return 1
+}
+
 func (self *hanoiPuzzle) move(source, target int) {
 	sourceStack := self.getStackByNum(source)
 	targetStack := self.getStackByNum(target)
 
 	d, _ := sourceStack.Pop()
 	targetStack.Push(d)
-	fmt.Printf("Moved disk #%v from tower #%v to tower #%v", d, source, target)
+	fmt.Printf("D%v #%v -> #%v \n", d, source, target)
 }
 
-func (self *hanoiPuzzle) reverseSolve(numberOfDisks int) {
+func (self *hanoiPuzzle) recursiveSolve(numberOfDisks, source, target int) {
 	if numberOfDisks == 1 {
-		self.move(3, 1)
-	}
-
-	self.reverseSolve(numberOfDisks - 1)
-	self.move(3, 2)
-}
-
-func (self *hanoiPuzzle) recursiveSolve(numberOfDisks int) {
-	if numberOfDisks == 1 {
-		self.move(1, 3)
+		self.move(source, target)
 		return
 	}
 
-	self.recursiveSolve(numberOfDisks - 1)
-	self.move(1, 2)
-
+	proxy := self.getMissingStack(source, target)
+	self.recursiveSolve(numberOfDisks - 1, source, proxy)
+	self.move(source, target)
+	self.recursiveSolve(numberOfDisks - 1, proxy, target)
 }
 
 func (self *hanoiPuzzle) solve() {
-	self.recursiveSolve(self.numberOfDisks)
+	self.recursiveSolve(self.numberOfDisks, 1, 3)
 }
 
 func main() {
-	puzzle := NewHanoiPuzzle(5)
+	puzzle := NewHanoiPuzzle(3)
 	puzzle.solve()
 }
