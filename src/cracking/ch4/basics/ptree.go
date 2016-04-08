@@ -8,26 +8,26 @@ type PTreeNode struct {
 }
 
 func GenerateNonBalancedPTree() *PTreeNode {
-	/*    5
+	/*    8
 		 / \
-		6   7
+		5   9
 	   / \
-	  9   10
+	  4   7
 	 /
-	8*/
-	n5 := &PTreeNode{8, nil, nil, nil}
-	n6 := &PTreeNode{9, nil, nil, nil}
-	n7 := &PTreeNode{10, nil, nil, nil}
-	n8 := &PTreeNode{8, nil, nil, nil}
-	n9 := &PTreeNode{9, nil, nil, nil}
-	n10 := &PTreeNode{10, nil, nil, nil}
+	3*/
+	n3 := &PTreeNode{8, nil, nil, nil}
+	n4 := &PTreeNode{9, nil, nil, nil}
+	n5 := &PTreeNode{10, nil, nil, nil}
+	n7 := &PTreeNode{8, nil, nil, nil}
+	n8 := &PTreeNode{9, nil, nil, nil}
+	n9 := &PTreeNode{10, nil, nil, nil}
 
-	n5.Left = n6; n5.Right = n7
-	n6.Parent = n5; n6.Left = n9; n6.Right = n10
-	n7.Parent = n5
-	n8.Parent = n9
-	n9.Parent = n6; n9.Left = n8
-	n10.Parent = n6
+	n3.Parent = n4
+	n4.Parent = n5; n4.Left = n3
+	n5.Parent = n8; n5.Left = n4; n5.Right = n7
+	n7.Parent = n5;
+	n8.Left = n5; n8.Right = n9
+	n9.Parent = n8
 
-	return n5
+	return n8
 }
