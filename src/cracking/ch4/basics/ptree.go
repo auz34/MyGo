@@ -7,7 +7,7 @@ type PTreeNode struct {
 	Right *PTreeNode
 }
 
-func GenerateNonBalancedPTree() *TreeNode {
+func GenerateNonBalancedPTree() *PTreeNode {
 	/*    5
 		 / \
 		6   7
