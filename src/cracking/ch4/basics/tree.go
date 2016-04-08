@@ -49,9 +49,9 @@ func GenerateNonBalancedTree2() *TreeNode {
 	n14 := &TreeNode{14, nil, nil}
 
 	n6 := &TreeNode{6, n9, n10}
-	n7 := &TreeNode{6, n18, n14}
+	n7 := &TreeNode{7, n18, n14}
 
-	n5 := &TreeNode{6, n6, n7}
+	n5 := &TreeNode{5, n6, n7}
 
 	return n5
 }
