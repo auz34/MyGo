@@ -15,12 +15,12 @@ func GenerateNonBalancedPTree() *PTreeNode {
 	  4   7
 	 /
 	3*/
-	n3 := &PTreeNode{8, nil, nil, nil}
-	n4 := &PTreeNode{9, nil, nil, nil}
-	n5 := &PTreeNode{10, nil, nil, nil}
-	n7 := &PTreeNode{8, nil, nil, nil}
-	n8 := &PTreeNode{9, nil, nil, nil}
-	n9 := &PTreeNode{10, nil, nil, nil}
+	n3 := &PTreeNode{3, nil, nil, nil}
+	n4 := &PTreeNode{4, nil, nil, nil}
+	n5 := &PTreeNode{5, nil, nil, nil}
+	n7 := &PTreeNode{7, nil, nil, nil}
+	n8 := &PTreeNode{8, nil, nil, nil}
+	n9 := &PTreeNode{9, nil, nil, nil}
 
 	n3.Parent = n4
 	n4.Parent = n5; n4.Left = n3
