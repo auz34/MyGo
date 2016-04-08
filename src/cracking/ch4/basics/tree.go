@@ -29,6 +29,33 @@ func GenerateNonBalancedTree() *TreeNode {
 	return root
 }
 
+func GenerateNonBalancedTree2() *TreeNode {
+	/*           5
+		    /        \
+		  6           7
+	   /    \       /   \
+	  9      10    18   14
+	 / \    /  \
+	8   11 13   15*/
+
+	n8 := &TreeNode{8, nil, nil}
+	n11 := &TreeNode{11, nil, nil}
+	n13 := &TreeNode{13, nil, nil}
+	n15 := &TreeNode{15, nil, nil}
+
+	n9 := &TreeNode{9, n8, n11}
+	n10 := &TreeNode{10, n13, n15}
+	n18 := &TreeNode{18, nil, nil}
+	n14 := &TreeNode{14, nil, nil}
+
+	n6 := &TreeNode{6, n9, n10}
+	n7 := &TreeNode{6, n18, n14}
+
+	n5 := &TreeNode{6, n6, n7}
+
+	return n5
+}
+
 func traverseAndCollect(node *TreeNode, level int, results map[int]string) {
 	if (node == nil) {
 		return
