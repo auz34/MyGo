@@ -17,10 +17,14 @@ func main() {
 
 func copyInBetween(N, M, left, right uint) uint {
 	mask := ^uint(0)
+	for i:=left; i<=right; i++ {
+		mask &^= i<<i
+	}
+
 	fmt.Printf("Mask: %b \n", mask)
+	N &= mask
+
 	shift := M << left
-	fmt.Printf("Shifted: %b (%v) \n", shift, shift)
-	nshift := ^shift
-	fmt.Printf("n-Shifted: %b (%v) \n", nshift, nshift)
+
 	return N | shift
 }
