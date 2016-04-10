@@ -9,15 +9,13 @@ func main() {
 }
 
 func count(n int) int {
-	mem := make([]int, n + 1)
-	mem[0] = 0
-	mem[1] = 1
-	mem[2] = 2
-	mem[3] = 4
+	n1 := 1
+	n2 := 2
+	n3 := 4
 
 	for i:=4; i<=n; i++ {
-		mem[i] = mem[i-1] + mem[i-2] + mem[i-3]
+		n1, n2, n3 = n2, n3, n1+n2+n3
 	}
 
-	return mem[n]
+	return n3
 }
