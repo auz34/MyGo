@@ -9,42 +9,11 @@ package main
 
 import (
 	"fmt"
-	"unicode/utf8"
+	"cracking/ch8/basics"
 )
 
 func main() {
-	fmt.Printf("((1^0)|0)|1 = %v", eval("((1^0)|0)|1"))
+	infix := "((1^0)|0)|1"
+	fmt.Printf("Infix expression \"%v\" can presented as \"%v\" in postfix", infix, basics.InfixToPostfix(infix))
 }
 
-func translateToBool(r rune) bool {
-	if r == "0" {
-		return false
-	} else {
-		return true
-	}
-}
-
-func evalSimpleExpr(expr string) bool {
-	// first rune is always 1 or 0
-	r, _ := utf8.DecodeRuneInString(expr[0:])
-	result := translateToBool(r)
-
-	for i:=1; i<len(expr); i+=2 {
-		opr, _ := utf8.DecodeRuneInString(expr[i:])
-		r2, _ := utf8.DecodeRuneInString(expr[i+1:])
-		switch opr {
-		case "&":
-			result = result && translateToBool(r2)
-		case "|":
-			result = result || translateToBool(r2)
-		case "^":
-			result = result ^ translateToBool(r2)
-		}
-	}
-
-	return result
-}
-
-func eval(expr string) bool {
-	return evalSimpleExpr(expr)
-}
