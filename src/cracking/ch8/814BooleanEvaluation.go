@@ -13,7 +13,10 @@ import (
 )
 
 func main() {
-	infix := "((1^0)|0)|1"
-	fmt.Printf("Infix expression \"%v\" can presented as \"%v\" in postfix", infix, basics.InfixToPostfix(infix))
+	infix := "((1^0)|1)&0"
+	postfix := basics.InfixToPostfix(infix)
+	fmt.Printf("Infix expression \"%v\" can presented as \"%v\" in postfix \n", infix, postfix)
+	res := basics.EvalPostfix(postfix)
+	fmt.Printf("%v = %v \n", infix, res)
 }
 
