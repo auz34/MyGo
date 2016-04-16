@@ -55,33 +55,33 @@ func quickSort(list []string) {
 		return
 	}
 
+	// randomizing
 	rand.Seed(42)
 	ndx := rand.Intn(l)
 	list[0], list[ndx] = list[ndx], list[0]
 
-	sP := 1
-	fP := l
-	for sP < fP {
-		if list[sP] < list[0] {
-			sP++
+	v := list[0]
+	i, lt, gt := 0, 0, l-1
+
+	for i <= gt {
+		cmp := anagramCompare(v, list[i])
+		if cmp<0 {
+			list[lt], list[i] = list[i], list[lt]
+			lt++
+			i++
+		} else if cmp>0 {
+			list[gt], list[i] = list[i], list[gt]
+			gt--
 		} else {
-			fP--
-			list[sP], list[fP] = list[fP], list[sP]
+			i++
 		}
 	}
 
-	if sP == l {
-		quickSort(list[1:])
-		return
+	if lt>0 {
+		quickSort(list[0:lt])
 	}
 
-	partBorder := sP - 1
-	list[0], list[partBorder] = list[partBorder], list[0]
-	if ndx > 0 {
-		quickSort(list[0:partBorder])
-	}
-
-	if ndx < l - 1 {
-		quickSort(list[partBorder+1:])
+	if gt<l-1 {
+		quickSort(list[gt+1:])
 	}
 }
