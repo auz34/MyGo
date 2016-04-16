@@ -16,30 +16,37 @@ func main() {
 	}
 }
 
-func getStringMap(s string) map[rune]int {
+func getStringMap(s string) (map[rune]int, int) {
 	result := make(map[rune]int)
+	sum := 0
+
 	for i:=0; i<len(s); {
 		r, w := utf8.DecodeRuneInString(s[i:])
 		result[r]++
+		sum += int(r)
 		i+=w
 	}
-	return result
+	return result, sum
 }
 
-func anagramCompare(s1, s2 string) bool {
+func anagramCompare(s1, s2 string) int {
 	if len(s1) != len(s2) {
 		return false
 	}
 
-	set1 := getStringMap(s1)
-	set2 := getStringMap(s2)
+	set1, checkSum1 := getStringMap(s1)
+	set2, checkSum2 := getStringMap(s2)
+	if (checkSum1 != checkSum2) {
+		return checkSum1 - checkSum2
+	}
+
 	for r, n := range set1 {
 		if set2[r] != n {
-			return false
+			return -1
 		}
 	}
 
-	return true
+	return 0
 }
 
 func quickSort(list []string) {
