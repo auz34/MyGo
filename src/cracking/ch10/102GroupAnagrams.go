@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	list := []string { "a", "d", "q", "b", "t", "c", "e"}
+	list := []string { "abcd", "dqwe", "cbn", "dabc", "cabd", "ewqd", "nbc"}
 
 	quickSort(list)
 	for _, s := range list {
@@ -30,10 +30,6 @@ func getStringMap(s string) (map[rune]int, int) {
 }
 
 func anagramCompare(s1, s2 string) int {
-	if len(s1) != len(s2) {
-		return false
-	}
-
 	set1, checkSum1 := getStringMap(s1)
 	set2, checkSum2 := getStringMap(s2)
 	if (checkSum1 != checkSum2) {
