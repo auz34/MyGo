@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	list := []string { "a", "d", "q", "b", "t", "c", "e"}
+	list := []string { "abcd", "dqwe", "cbn", "dabc", "cabd", "ewqd", "nbc"}
 
 	quickSort(list)
 	for _, s := range list {
@@ -16,30 +16,33 @@ func main() {
 	}
 }
 
-func getStringMap(s string) map[rune]int {
+func getStringMap(s string) (map[rune]int, int) {
 	result := make(map[rune]int)
+	sum := 0
+
 	for i:=0; i<len(s); {
 		r, w := utf8.DecodeRuneInString(s[i:])
 		result[r]++
+		sum += int(r)
 		i+=w
 	}
-	return result
+	return result, sum
 }
 
-func anagramCompare(s1, s2 string) bool {
-	if len(s1) != len(s2) {
-		return false
+func anagramCompare(s1, s2 string) int {
+	set1, checkSum1 := getStringMap(s1)
+	set2, checkSum2 := getStringMap(s2)
+	if (checkSum1 != checkSum2) {
+		return checkSum1 - checkSum2
 	}
 
-	set1 := getStringMap(s1)
-	set2 := getStringMap(s2)
 	for r, n := range set1 {
 		if set2[r] != n {
-			return false
+			return -1
 		}
 	}
 
-	return true
+	return 0
 }
 
 func quickSort(list []string) {
@@ -48,33 +51,33 @@ func quickSort(list []string) {
 		return
 	}
 
+	// randomizing
 	rand.Seed(42)
 	ndx := rand.Intn(l)
 	list[0], list[ndx] = list[ndx], list[0]
 
-	sP := 1
-	fP := l
-	for sP < fP {
-		if list[sP] < list[0] {
-			sP++
+	v := list[0]
+	i, lt, gt := 0, 0, l-1
+
+	for i <= gt {
+		cmp := anagramCompare(v, list[i])
+		if cmp<0 {
+			list[lt], list[i] = list[i], list[lt]
+			lt++
+			i++
+		} else if cmp>0 {
+			list[gt], list[i] = list[i], list[gt]
+			gt--
 		} else {
-			fP--
-			list[sP], list[fP] = list[fP], list[sP]
+			i++
 		}
 	}
 
-	if sP == l {
-		quickSort(list[1:])
-		return
+	if lt>0 {
+		quickSort(list[0:lt])
 	}
 
-	partBorder := sP - 1
-	list[0], list[partBorder] = list[partBorder], list[0]
-	if ndx > 0 {
-		quickSort(list[0:partBorder])
-	}
-
-	if ndx < l - 1 {
-		quickSort(list[partBorder+1:])
+	if gt<l-1 {
+		quickSort(list[gt+1:])
 	}
 }
