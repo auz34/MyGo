@@ -8,3 +8,29 @@ getRankOfNumber(1) = 0
 getRankOfNumber(3) = 1
 getRankOfNumber(4) = 3
 */
+
+package main
+
+import (
+	"fmt"
+	"cracking/ch10/rbt"
+)
+
+func main() {
+	tree := rbt.NewRedBlackTree()
+
+	tree.Insert(5)
+	tree.Insert(1)
+	tree.Insert(4)
+	tree.Insert(4)
+	tree.Insert(5)
+	tree.Insert(9)
+	tree.Insert(7)
+	tree.Insert(13)
+	tree.Insert(3)
+
+	fmt.Printf("Rank of 1 is: %v \n", tree.GetRank(1))
+	fmt.Printf("Rank of 3 is: %v \n", tree.GetRank(3))
+	fmt.Printf("Rank of 4 is: %v \n", tree.GetRank(4))
+	fmt.Printf("Rank of 9 is: %v \n", tree.GetRank(9))
+}
