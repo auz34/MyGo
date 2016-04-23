@@ -44,8 +44,8 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"math/rand"
+	"os"
 )
 
 type item struct {
@@ -69,15 +69,15 @@ func main() {
 		for j:=0; j<n; j++ {
 			var v int
 			fmt.Fscan(os.Stdin, &v)
-			ar[j] = item{v, j}
+			ar[j] = item{v, j + 1}
 		}
 
-		solve(ar, money)
+		solve2(ar, money)
 		i++
 	}
 }
 
-func solve(ar []item, money int) {
+func solve2(ar []item, money int) {
 	sort(ar)
 	for i:=0; i<len(ar); i++ {
 		el1 := ar[i]
@@ -85,10 +85,11 @@ func solve(ar []item, money int) {
 			continue
 		}
 
-		ok, el2 := search(ar, money, el1)
+		ok, el2 := search(ar, money - el1.value, el1)
 		if ok {
 			if el1.index > el2.index {
 				fmt.Printf("%v %v\n", el2.index, el1.index)
+				return
 			}
 
 			fmt.Printf("%v %v\n", el1.index, el2.index)
@@ -98,6 +99,10 @@ func solve(ar []item, money int) {
 }
 
 func sort(ar []item) {
+	if len(ar) <=1 {
+		return
+	}
+
 	rand.Seed(42)
 	v := ar[rand.Intn(len(ar))]
 	i, lt, gt := 0, 0, len(ar) - 1
@@ -109,7 +114,7 @@ func sort(ar []item) {
 			i++
 		} else if comp < 0 {
 			ar[i], ar[gt] = ar[gt], ar[i]
-			i--
+			gt--
 		} else {
 			i++
 		}
