@@ -45,11 +45,11 @@ package main
 
 import (
 	"fmt"
-	//"os"
+	"os"
 )
 
 func main() {
-	/*var testCases int
+	var testCases int
 	fmt.Fscan(os.Stdin, &testCases)
 
 	for i:=0; i<testCases; {
@@ -69,17 +69,7 @@ func main() {
 		fmt.Printf("%v\n", solve3(ar, m))
 
 		i++
-	}*/
-	m := 1804289384
-	ar := []int { 846930887, 1681692778, 1714636916, 1957747794, 424238336,
-		719885387, 1649760493, 596516650, 1189641422, 1025202363, 1350490028, 783368691, 1102520060, 2044897764,
-		1967513927, 1365180541, 1540383427, 304089173, 1303455737, 35005212, 521595369, 294702568, 1726956430,
-		336465783, 861021531, 278722863, 233665124, 2145174068, 468703136, 1101513930, 1801979803, 1315634023,
-		635723059, 1369133070, 1125898168, 1059961394, 2089018457, 628175012, 1656478043, 1131176230, 1653377374,
-		859484422, 1914544920, 608413785, 756898538, 1734575199, 1973594325, 149798316, 2038664371, 1129566414 }
-
-	fmt.Printf("Optimal solution: %v\n", solve3(ar, m))
-	fmt.Printf("Brute Force solution: %v\n", solve3BF(ar, m))
+	}
 }
 
 type node struct {
@@ -180,8 +170,6 @@ func searchNext(n *node, value int) int {
 		}
 
 		return res
-	} else if cmp < 0 {
-		return -1
 	} else {
 		return searchNext(n.right, value)
 	}
@@ -197,32 +185,6 @@ func flipColors(n *node) {
 	n.right.color = false
 }
 
-func bfItem(ar []int, m int) int {
-	sum := 0
-	result := 0
-	for i:=0; i<len(ar); i++ {
-		sum += ar[i]
-		mod := sum % m
-		if mod > result {
-			result = mod
-		}
-	}
-
-	return result
-}
-
-func solve3BF(ar []int, m int) int {
-	result := 0
-	for i:=0; i<len(ar); i++ {
-		mod := bfItem(ar[i:], m)
-		if mod > result {
-			result = mod
-		}
-	}
-
-	return result
-}
-
 func solve3(ar []int, m int) int {
 	result := 0
 	sum := 0
@@ -233,8 +195,9 @@ func solve3(ar []int, m int) int {
 
 		tree.put(mod)
 		next := tree.next(mod)
+
 		if next != -1 {
-			mod = mod + next - m
+			mod = mod - next + m
 		}
 
 		if mod > result {
