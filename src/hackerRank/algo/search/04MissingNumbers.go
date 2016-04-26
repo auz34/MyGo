@@ -43,13 +43,12 @@ package main
 import (
 	"fmt"
 	"os"
-	"math/rand"
+	//"math/rand"
 )
 
 func main() {
 	a := readMap()
-	b := readMap()
-	result := solve4(a, b)
+	result := adjustMap(a)
 	sort4(result)
 	for _, v := range result {
 		fmt.Printf("%v ", v)
@@ -66,15 +65,24 @@ func readMap() map[int]int {
 		fmt.Fscan(os.Stdin, &v)
 		a[v]++
 	}
+
 	return a
 }
 
-func solve4(a, b map[int]int) []int {
+func adjustMap(a map[int]int) []int {
 	result := make([]int, 0)
-	for k, v := range b {
-		if a[k] != v {
-			result = append(result, k)
+
+	var n int
+	fmt.Fscan(os.Stdin, &n)
+
+	for i:=0; i<n; i++ {
+		var v int
+		fmt.Fscan(os.Stdin, &v)
+		if a[v] == 0 {
+			result = append(result, v)
 		}
+
+		a[v]--
 	}
 
 	return result
@@ -85,8 +93,10 @@ func sort4(ar []int) {
 		return
 	}
 
-	rand.Seed(42)
-	v := ar[rand.Intn(len(ar))]
+	/*rand.Seed(42)
+	v := ar[rand.Intn(len(ar))]*/
+	mid := len(ar) / 2
+	v := ar[mid]
 
 	i, lt, gt := 0, 0, len(ar) - 1
 	for i<=gt {
