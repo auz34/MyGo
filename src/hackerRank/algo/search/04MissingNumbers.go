@@ -47,30 +47,38 @@ import (
 )
 
 func main() {
-	a := readMap()
-	result := adjustMap(a)
-	sort4(result)
-	for _, v := range result {
-		fmt.Printf("%v ", v)
+	myMap := make([]int, 202)
+	base := readMap(myMap)
+	adjustMap(myMap, base)
+
+	for i, v := range myMap {
+		if v < 0 {
+			fmt.Printf("%v ", i + base)
+		}
+
 	}
 }
 
-func readMap() map[int]int {
+func readMap(myMap []int) int {
 	var n int
 	fmt.Fscan(os.Stdin, &n)
 
-	a := make(map[int]int)
-	for i:=0; i<n; i++ {
+	var a1 int
+	fmt.Fscan(os.Stdin, &a1)
+
+	base := a1 - 101
+	myMap[101]++
+
+	for i:=1; i<n; i++ {
 		var v int
 		fmt.Fscan(os.Stdin, &v)
-		a[v]++
+		myMap[v-base]++
 	}
 
-	return a
+	return base
 }
 
-func adjustMap(a map[int]int) []int {
-	result := make([]int, 0)
+func adjustMap(myMap []int, base int) {
 
 	var n int
 	fmt.Fscan(os.Stdin, &n)
@@ -78,41 +86,6 @@ func adjustMap(a map[int]int) []int {
 	for i:=0; i<n; i++ {
 		var v int
 		fmt.Fscan(os.Stdin, &v)
-		if a[v] == 0 {
-			result = append(result, v)
-		}
-
-		a[v]--
+		myMap[v - base]--
 	}
-
-	return result
-}
-
-func sort4(ar []int) {
-	if len(ar)<= 1 {
-		return
-	}
-
-	/*rand.Seed(42)
-	v := ar[rand.Intn(len(ar))]*/
-	mid := len(ar) / 2
-	v := ar[mid]
-
-	i, lt, gt := 0, 0, len(ar) - 1
-	for i<=gt {
-		cmp := ar[i] - v
-		if cmp < 0 {
-			ar[i], ar[lt] = ar[lt], ar[i]
-			i++
-			lt++
-		} else if cmp > 0 {
-			ar[i], ar[gt] = ar[gt], ar[i]
-			gt--
-		} else {
-			i++
-		}
-	}
-
-	sort4(ar[0:lt])
-	sort4(ar[gt+1:])
 }
