@@ -43,13 +43,18 @@ package main
 import (
 	"fmt"
 	"os"
-	//"math/rand"
+	"io/ioutil"
+	"unicode"
+	"unicode/utf8"
+	"strconv"
 )
 
 func main() {
 	myMap := make([]int, 202)
-	base := readMap(myMap)
-	adjustMap(myMap, base)
+	b, _ := ioutil.ReadAll(os.Stdin)
+
+	base, b := readMap(myMap, b)
+	adjustMap(myMap, base, b)
 
 	for i, v := range myMap {
 		if v < 0 {
@@ -59,33 +64,55 @@ func main() {
 	}
 }
 
-func readMap(myMap []int) int {
-	var n int
-	fmt.Fscan(os.Stdin, &n)
+func readInt(input []byte) (int, []byte) {
+	slice := input
+	numberWidth := 0
+	for len(slice) > 0 {
+		r, size := utf8.DecodeRune(slice)
+		slice = slice[size:]
+		if unicode.IsDigit(r) {
+			numberWidth += size
+		} else {
+			break
+		}
+	}
 
-	var a1 int
-	fmt.Fscan(os.Stdin, &a1)
+	res, _ := strconv.Atoi(string(input[0:numberWidth]))
+
+	for len(slice) > 0 {
+		r, size := utf8.DecodeRune(slice)
+		if unicode.IsDigit(r) {
+			break
+		}
+
+		slice = slice[size:]
+	}
+
+	return res, slice
+}
+
+func readMap(myMap []int, input []byte) (int, []byte) {
+	n, b := readInt(input)
+	a1, b := readInt(b)
 
 	base := a1 - 101
 	myMap[101]++
 
 	for i:=1; i<n; i++ {
 		var v int
-		fmt.Fscan(os.Stdin, &v)
+		v, b = readInt(b)
 		myMap[v-base]++
 	}
 
-	return base
+	return base, b
 }
 
-func adjustMap(myMap []int, base int) {
-
-	var n int
-	fmt.Fscan(os.Stdin, &n)
+func adjustMap(myMap []int, base int, input []byte) {
+	n, b := readInt(input)
 
 	for i:=0; i<n; i++ {
 		var v int
-		fmt.Fscan(os.Stdin, &v)
+		v, b = readInt(b)
 		myMap[v - base]--
 	}
 }
