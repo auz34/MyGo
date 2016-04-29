@@ -74,6 +74,10 @@ func solve2(ar []int) (int, int) {
 	res1 := mem[0]
 	maxItem := mem[0]
 	positiveSum := 0
+	if ar[0] > 0 {
+		positiveSum += ar[0]
+	}
+
 	for i:=1; i<len(ar); i++ {
 		mem[i] = max(mem[i-1] + ar[i], ar[i])
 		if mem[i] > res1 {
