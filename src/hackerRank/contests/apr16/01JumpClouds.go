@@ -68,7 +68,6 @@ func main() {
 	}
 
 	fmt.Printf("%v", solve1(clouds))
-
 }
 
 func min(a, b int) int {
@@ -80,33 +79,23 @@ func min(a, b int) int {
 }
 
 func solve1(clouds []int) int {
-	n := len(clouds)
-	if n==1 {
-		return 0
-	}
-
-	if n<=3 {
-		return 1
-	}
-
-
-	mem := make([]int, n)
-	mem[0] = 0
-	mem[1] = 1
-
+	preprev := 0
+	prev := 1
 
 	const MaxUint = ^uint(0)
 	const MaxInt = int(MaxUint >> 1)
 
-	for i:=2; i<n-1; i++ {
+	for i:=2; i<len(clouds)-1; i++ {
+		var next int
 		if clouds[i] == 0 {
-			mem[i] = min(mem[i-1], mem[i-2]) + 1
+			next = min(preprev, prev) + 1
 		} else {
-			mem[i] = MaxInt
+			next = MaxInt
 		}
+		preprev, prev = prev, next
 	}
 
 
-	return min(mem[len(mem) - 1], mem[len(mem)-2]) + 1
+	return min(preprev, prev) + 1
 }
 
