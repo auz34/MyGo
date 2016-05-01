@@ -46,18 +46,34 @@ func main() {
 }
 
 func solve4(rates []int) int {
-	sum := 1
-	prevItem := 1
-	fmt.Printf("0-th child (rate %v) -> 1 candies\n", rates[0])
+	mem := make([]int, len(rates))
+	mem[0]= 1
+
 	for i:=1; i<len(rates); i++ {
 		if rates[i] > rates[i-1] {
-			prevItem++
+			mem[i] = mem[i-1] + 1
 		} else {
-			prevItem = 1
+			mem[i] = 1
+		}
+	}
+
+	prevItem := 1
+	for i:=len(rates) - 2; i>=0; i-- {
+		next := 1
+		if rates[i] > rates[i+1] {
+			next = prevItem + 1
 		}
 
-		sum += prevItem
-		fmt.Printf("%v-th child (rate %v) -> %v candies\n", i, rates[i], prevItem)
+		if mem[i]<next {
+			mem[i] = next
+		}
+
+		prevItem = next
+	}
+
+	sum := 0
+	for i:=0; i<len(mem); i++ {
+		sum += mem[i]
 	}
 
 	return sum
