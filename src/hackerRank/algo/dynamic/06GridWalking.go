@@ -48,11 +48,11 @@ package main
 
 import (
 	"fmt"
-	"os"
+	//"os"
 )
 
 func main() {
-	var testCases int
+	/*var testCases int
 	fmt.Fscan(os.Stdin, &testCases)
 	for i:=0; i<testCases; i++ {
 		var n int
@@ -76,7 +76,14 @@ func main() {
 		}
 
 		fmt.Printf("%v\n", solve6(m, x, d))
-	}
+	}*/
+	/*5 200
+	31 64 13 10 65
+	33 77 40 27 95*/
+	m := 2
+	x := []int {30, 63, 12, 9, 64}
+	d := []int {32, 76, 39, 26, 94}
+	fmt.Printf("%v\n", solve6(m, x, d))
 }
 
 func getStepMap(previousStep map[uint64]int, d []int) map[uint64]int {
