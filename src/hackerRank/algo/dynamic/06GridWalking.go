@@ -48,7 +48,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"os"
 )
 
@@ -66,55 +65,103 @@ func main() {
 		for j:=0; j<n; j++ {
 			var v int
 			fmt.Fscan(os.Stdin, &v)
-			x[j] = v
+			x[j] = v-1
 		}
 
 		d := make([]int, n)
 		for j:=0; j<n; j++ {
 			var v int
 			fmt.Fscan(os.Stdin, &v)
-			d[j] = v
+			d[j] = v-1
 		}
 
-		cache := make(map[string]int)
-		fmt.Printf("%v\n", solve6(m, x, d, cache))
+		fmt.Printf("%v\n", solve6(m, x, d))
 	}
 }
 
-func solve6(m int, x, d []int, cache map[string]int) int {
+func getStepMap(previousStep map[uint64]int, d []int) map[uint64]int {
+	result := make(map[uint64]int)
+	x := make([]int, len(d))
+
+	ok := true
+	for ok {
+		key := cacheKey(x)
+		sum := getPointSum(previousStep, x, d)
+
+		result[key] = sum
+
+		ok = next(x, d)
+	}
+
+	return result
+}
+
+func getPointSum(previousStep map[uint64]int, x, d []int) int {
+	sum := 0
+	for i:=0; i<len(x); i++ {
+		if x[i] > 0 {
+			if previousStep != nil {
+				x[i]--
+				key1 := cacheKey(x)
+				sum += previousStep[key1]
+				x[i]++
+			} else {
+				sum++
+			}
+		}
+
+		if x[i] < d[i] {
+			if previousStep != nil {
+				x[i]++
+				key1 := cacheKey(x)
+				sum += previousStep[key1]
+				x[i]--
+			} else {
+				sum++
+			}
+		}
+	}
+
+	return sum % 1000000007
+}
+
+func next(x, d []int) bool {
+	curDim := 0
+	ok := false
+	for curDim<len(d) && !ok {
+		if x[curDim] < d[curDim] {
+			x[curDim]++
+			ok = true
+		} else {
+			x[curDim] = 0
+			curDim++
+		}
+	}
+
+	return ok
+}
+
+func solve6(m int, x, d []int) int {
 	if m == 0 {
 		return 1
 	}
 
-	key := cacheKey(m, x)
-	res, ok := cache[key]
-	if ok {
-		return res
+	var previousStep map[uint64]int
+
+	for i:=1; i<m; i++ {
+		previousStep = getStepMap(previousStep, d)
 	}
 
-	sum := 0
-	for i:=0; i<len(x); i++ {
-		if x[i] > 1 {
-			x[i]--
-			sum += solve6(m-1, x, d, cache)
-			x[i]++
-		}
-
-		if x[i] < d[i] {
-			x[i]++
-			sum += solve6(m-1, x, d, cache)
-			x[i]--
-		}
-	}
-
-	return sum
+	return getPointSum(previousStep, x, d)
 }
 
-func cacheKey(m int, x []int) string {
-	s := strconv.Itoa(m) + "_"
+func cacheKey(x []int) uint64 {
+	m := uint64(1)
+	key := uint64(0)
 	for i:=0; i<len(x); i++ {
-		s += strconv.Itoa(x[i]) + "_"
+		key += uint64(x[i]) * m
+		m *= 100
 	}
 
-	return s
+	return key
 }
