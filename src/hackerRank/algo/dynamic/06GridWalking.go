@@ -95,17 +95,15 @@ func solve6(m int, x, d []int, cache map[string]int) int {
 	sum := 0
 	for i:=0; i<len(x); i++ {
 		if x[i] > 1 {
-			xc := make([]int, len(x))
-			copy(xc, x)
-			xc[i] = x[i] - 1
-			sum += solve6(m-1, xc, d, cache)
+			x[i]--
+			sum += solve6(m-1, x, d, cache)
+			x[i]++
 		}
 
 		if x[i] < d[i] {
-			xc := make([]int, len(x))
-			copy(xc, x)
-			xc[i] = x[i] + 1
-			sum += solve6(m-1, xc, d, cache)
+			x[i]++
+			sum += solve6(m-1, x, d, cache)
+			x[i]--
 		}
 	}
 
