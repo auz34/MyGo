@@ -35,8 +35,8 @@ type Interval struct {
    End   int
 }
 
-func (self *Interval) IsOverlap(a Interval) bool {
-   return compare(*self, a) == 0
+func isOverlap(a,b Interval) bool {
+   return compare(a, b) == 0
 }
 
 func compare(a, b Interval) int {
@@ -67,13 +67,13 @@ func max(x,y int) int {
    return y
 }
 
-func (self *Interval) Merge(a Interval) {
-   if !self.IsOverlap(a) {
-      panic("Wrong logic")
-   }
+func mergeIntervals(target, source *Interval) {
+	if !isOverlap(*target, *source) {
+		panic("Wrong logic")
+	}
 
-   self.Start = min(self.Start, a.Start)
-   self.End = max(self.End, a.End)
+	target.Start = min(target.Start, source.Start)
+	target.End = max(target.End, source.End)
 }
 
 func merge(intervals []Interval) []Interval {
@@ -97,7 +97,7 @@ func merge(intervals []Interval) []Interval {
 			left = append(left, intervals[i])
 		} else {
 			overlaps = true
-			v.Merge(intervals[i])
+			mergeIntervals(&v, &intervals[i])
 		}
 	}
 
