@@ -17,30 +17,21 @@ import "fmt"
 func main() {
 	ar := []int {1,2,3,4}
 
-	fmt.Printf("Result: %v", productExceptSelf(ar))
+	fmt.Printf("Result: %v\n", productExceptSelf(ar))
 }
 
 func productExceptSelf(nums []int) []int {
-	bk := make([]int, len(nums))
 	result := make([]int, len(nums))
 
-	for i:=len(nums) - 1; i>0; i-- {
-		prev := 1
-		if i<len(nums) - 1 {
-			prev = bk[i+1]
-		}
-
-		bk[i] = prev*nums[i]
+	result[len(nums) - 1] = 1
+	for i:=len(nums) - 2; i>=0; i-- {
+		result[i] = result[i+1] * nums[i+1]
 	}
 
 	prev := 1
 	for i:=0; i< len(nums); i++ {
-		next := 1
-		if i<len(nums) - 1 {
-			next = bk[i+1]
-		}
 
-		result[i] = prev*next
+		result[i] = prev*result[i]
 		prev = prev * nums[i]
 	}
 
