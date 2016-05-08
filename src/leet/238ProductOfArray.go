@@ -21,17 +21,8 @@ func main() {
 }
 
 func productExceptSelf(nums []int) []int {
-	fw := make([]int, len(nums))
 	bk := make([]int, len(nums))
-
-	for i:=0; i< len(nums); i++ {
-		prev := 1
-		if i>0 {
-			prev = fw[i-1]
-		}
-
-		fw[i] = prev*nums[i]
-	}
+	result := make([]int, len(nums))
 
 	for i:=len(nums) - 1; i>0; i-- {
 		prev := 1
@@ -42,19 +33,15 @@ func productExceptSelf(nums []int) []int {
 		bk[i] = prev*nums[i]
 	}
 
-	result := make([]int, len(nums))
+	prev := 1
 	for i:=0; i< len(nums); i++ {
-		prev := 1
-		if i>0 {
-			prev = fw[i-1]
-		}
-
 		next := 1
 		if i<len(nums) - 1 {
 			next = bk[i+1]
 		}
 
 		result[i] = prev*next
+		prev = prev * nums[i]
 	}
 
 	return result
