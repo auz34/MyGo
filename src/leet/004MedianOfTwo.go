@@ -28,10 +28,82 @@ func max004(x, y int) int {
 	return y
 }
 
-func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+func singleMedian(nums []int) float64{
+	if len(nums) == 0 {
+		return -1
+	}
+
+	if len(nums) % 2 != 0 {
+		return nums[len(nums)/2]
+	}
+
+	mid := len(nums) /2
+	return (nums[mid] + nums[mid-1]) / 2
+}
+
+func findMedian4SpecialCases(nums1, nums2 []int) float64 {
+	d1 := len(nums2)
+	if d1>2 {
+		d1 = 3
+	}
+	caseNum := 10*d1 + len(nums1)
+
+	switch (caseNum) {
+	case 0: // |nums2| = 0 |nums1| = 0
+		return float64(-1)
+	case 1: // |nums2| = 0 |nums1| = 1
+		return float64(nums1[0])
+	case 2: // |nums2| = 0 |nums1| = 2
+		return float64(nums1[0] + nums1[1])/2
+	case 10: //|nums2| = 1 |nums1| = 0
+		return float64(nums2[0])
+	case 11: //|nums2| = 1 |nums1| = 1
+		return float64(nums1[0] + nums2[0])/2
+	case 12: //|nums2| = 1 |nums1| = 2
+		if nums2[0]<nums1[0] {
+			return float64(nums1[0])
+		}
+		return float64(min004(nums2[0], nums1[1]))
+	case 21: //|nums2| = 2 |nums1| = 1
+		if nums1[0]<nums2[0] {
+			return float64(nums2[0])
+		}
+		return float64(min004(nums1[0], nums2[1]))
+	case 22: //|nums2| = 2 |nums1| = 1
+		return float64(max004(nums1[0], nums2[0]) + min004(nums1[1], nums2[1])) / 2
+	case 30: //|nums2| >= 3 |nums1| = 0
+		return singleMedian(nums2)
+	case 31:
+	case 32:
+		panic("Have not implemented yet")
+	}
+
+	if len(nums1) == 0 {
+		return singleMedian(nums2)
+	}
+
+	if len(nums2) == 0 {
+		return singleMedian(nums1)
+	}
+
+	if len(nums1) == 1 {
+
+	}
+
+
 	if len(nums1) == 2 && len(nums2) == 2 {
 		// a, b - c, d
 		return float64(max004(nums1[0], nums2[0]) + min004(nums1[1], nums2[1])) / 2
+	}
+}
+
+func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+	if len(nums1) <= 2 {
+		return findMedian4SpecialCases(nums1, nums2)
+	}
+
+	if len(nums2) <= 2 {
+		return findMedian4SpecialCases(nums2, nums1)
 	}
 
 	mid1 := len(nums1) / 2
