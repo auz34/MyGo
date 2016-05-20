@@ -17,6 +17,11 @@ func main() {
 	ar2 = []int {  }
 	fmt.Printf("Case #2:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
 
+	ar1 = []int {  }
+	ar2 = []int { 5, 7 }
+	fmt.Printf("Case #2a:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
+
+
 	ar1 = []int { 5 }
 	ar2 = []int { 1 }
 	fmt.Printf("Case #3:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
@@ -129,23 +134,42 @@ func main() {
 	ar2 = []int { 3, 7, 11, 15 }
 	fmt.Printf("Case #30:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
 
+	ar1 = []int { 4, 5 }
+	ar2 = []int { 1, 2, 3, 6 }
+	fmt.Printf("Case #31:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
+
 	fmt.Print("Test real cases: ")
 
 	ar1 = []int { 1, 2, 3, 4, 5 }
 	ar2 = []int { 6, 7, 8 }
-	fmt.Printf("Case #31:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
-
-	ar1 = []int { 1, 2, 3, 4, 5 }
-	ar2 = []int { 6, 7, 8, 9 }
 	fmt.Printf("Case #32:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
 
 	ar1 = []int { 1, 2, 3, 4, 5 }
-	ar2 = []int { 6, 7, 8, 9, 10 }
+	ar2 = []int { 6, 7, 8, 9 }
 	fmt.Printf("Case #33:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
+
+	ar1 = []int { 1, 2, 3, 4, 5 }
+	ar2 = []int { 6, 7, 8, 9, 10 }
+	fmt.Printf("Case #34:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
 
 	ar1 = []int { 1, 3, 5, 7, 9 }
 	ar2 = []int { 2, 4, 6 }
-	fmt.Printf("Case #34:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
+	fmt.Printf("Case #35:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
+
+	ar1 = []int { 1, 3, 3, 6, 7 }
+	ar2 = []int { 2, 3, 6 }
+	// 1, 2, 3, 3, 3, 6, 6, 7
+	fmt.Printf("Case #36:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
+
+	ar1 = []int { 1, 1, 3, 3 }
+	ar2 = []int { 1, 1, 3, 3 }
+	// 1, 2, 3, 3, 3, 6, 6, 7
+	fmt.Printf("Case #37:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
+
+	ar1 = []int { 1, 2, 6, 7 }
+	ar2 = []int { 3, 4, 5, 8 }
+	// 1, 2, 3, 3, 3, 6, 6, 7
+	fmt.Printf("Case #38:\n nums1=%v\n nums2=%v\n answer=%v\n", ar1, ar2, findMedianSortedArrays(ar1, ar2))
 }
 
 func min004(x, y int) int {
@@ -236,7 +260,7 @@ func medianArrayAndTwoNewElement(nums []int, el1, el2 int) float64 {
 		return float64(el1 + min004(el2, nums[mid])) / 2
 	}
 
-	return float64(nums[mid] + nums[mid+1]) / 2
+	return float64(nums[mid] + min004(el1, nums[mid+1])) / 2
 }
 
 func findMedian4SpecialCases(nums1, nums2 []int) float64 {
@@ -262,6 +286,8 @@ func findMedian4SpecialCases(nums1, nums2 []int) float64 {
 			return float64(nums1[0])
 		}
 		return float64(min004(nums2[0], nums1[1]))
+	case 20: // |nums2| = 0 |nums1| = 2
+		return float64(nums2[0] + nums2[1])/2
 	case 21: //|nums2| = 2 |nums1| = 1
 		if nums1[0]<nums2[0] {
 			return float64(nums2[0])
@@ -294,25 +320,23 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 	}
 
 	mid1 := len(nums1) / 2
-	mid2 := len(nums2) / 2
 
-	if nums1[mid1] == nums2[mid2] {
-		return float64(nums1[mid1])
+	median1 := singleMedian(nums1)
+	median2 := singleMedian(nums2)
+
+	if median1 == median2 {
+		return median2
 	}
 
-	if nums1[mid1] <nums2[mid2] {
-		if len(nums1) != len(nums2) {
-			return findMedianSortedArrays(nums1[mid1:], nums2[:mid2])
-		}
-
-		return findMedianSortedArrays(nums1[mid1:], nums2[:mid2+1])
+	if median1 < median2 {
+		// we cut mid1 elements from the beginning of nums1 array
+		// can cut the same amount from the end of nums2
+		cut := len(nums2) - mid1
+		return findMedianSortedArrays(nums1[mid1:], nums2[:cut])
 
 	}
 
-	if len(nums1) != len(nums2) {
-		return findMedianSortedArrays(nums1[:mid1 + 1], nums2[mid2 - 1:])
-	}
-
-	return findMedianSortedArrays(nums1[:mid1 + 1], nums2[mid2:])
+	cut := len(nums1) - mid1 - 1
+	return findMedianSortedArrays(nums1[:mid1 + 1], nums2[cut:])
 
 }
