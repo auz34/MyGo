@@ -331,9 +331,19 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 	if median1 < median2 {
 		// we cut mid1 elements from the beginning of nums1 array
 		// can cut the same amount from the end of nums2
+		if (len(nums1) % 2 == 0) {
+			cut := len(nums2) - mid1 + 1
+			return findMedianSortedArrays(nums1[mid1-1:], nums2[:cut])
+		}
+
 		cut := len(nums2) - mid1
 		return findMedianSortedArrays(nums1[mid1:], nums2[:cut])
 
+	}
+
+	if (len(nums1) % 2 == 0) {
+		cut := len(nums1) - mid1 - 1
+		return findMedianSortedArrays(nums1[:mid1 + 1], nums2[cut:])
 	}
 
 	cut := len(nums1) - mid1 - 1
